@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { ErrorResponse } from '@/types/type'
+import { ErrorResponse } from '@/utils/type'
 
 export default function errorHandling (err: any, res: NextApiResponse<ErrorResponse>): void {
   console.error("Error Handling:", err.name);

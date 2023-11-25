@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer utilities {
+  .side-bar-link {
+    @apply flex items-center py-2 px-4 text-slate-200 text-2xl gap-4 hover:bg-gray-950 hover:text-gray-300 rounded-lg group-[.active]:bg-gray-800 group-[.active]:text-white;
+  }
+}
