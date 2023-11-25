@@ -1,29 +1,30 @@
-export type Supplier = {
+export interface Supplier {
   id_suplier: number;
   nama_suplier: string;
   alamat: string;
   email: string;
 };
 
-export type SupplierResponse = {
+export interface SupplierResponse {
   data: Supplier[];
   message: string | any;
 };
 
-export type Product = {
+export interface Product {
+  id: number
   nama: string
-  deskkripsi: string
+  deskripsi: string
   harga: number
   stok: number
   foto: string
   suplier_id: number
 }
 
-export type ProductResponse = {
+export interface ProductResponse {
   data: Product[];
   message: string;
 };
 
-export type ErrorResponse = {
+export interface ErrorResponse {
   message: string;
 };

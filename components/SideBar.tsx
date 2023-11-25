@@ -9,7 +9,7 @@ const SideBar = () => {
     <div className="fixed left-0 top-0 w-64 p-4 h-full bg-gray-900">
       <div className="p-4 pb-6 mb-7 flex justify-left gap-4 border-b border-b-gray-200">
         <Image src="/icon/logo.svg" alt="product" width={34} height={34} />
-        <h1 className="text-5xl  text-slate-50">Brand</h1>
+        <h1 className="text-5xl font-bold text-slate-50">Brand</h1>
       </div>
       <ul>
         <li
