@@ -33,7 +33,7 @@ export default async function handler(
 
       res.status(200).json({ 
         data: product,
-        message: `Product ${product.name} deleted successfully` 
+        message: `Product ${product.nama} deleted successfully` 
       });
     };
 
