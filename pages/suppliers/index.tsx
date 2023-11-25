@@ -4,7 +4,6 @@ import React from "react";
 const Suppliers = () => {
   return (
     <>
-      <SideBar />
       <div>Suppliers</div>
     </>
   );
