@@ -5,9 +5,23 @@ export type Supplier = {
   email: string;
 };
 
-export type Response = {
+export type SupplierResponse = {
   data: Supplier[];
   message: string | any;
+};
+
+export type Product = {
+  nama: string
+  deskkripsi: string
+  harga: number
+  stok: number
+  foto: string
+  suplier_id: number
+}
+
+export type ProductResponse = {
+  data: Product[];
+  message: string;
 };
 
 export type ErrorResponse = {

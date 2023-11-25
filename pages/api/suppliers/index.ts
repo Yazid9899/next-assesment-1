@@ -2,11 +2,11 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
 import errorHandling from '@/utils/errorHandling'
-import { Response,ErrorResponse } from '@/types/type'
+import { SupplierResponse,ErrorResponse } from '@/types/type'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response | ErrorResponse>
+  res: NextApiResponse<SupplierResponse | ErrorResponse>
 ) {
   try {
     const db = await open({
