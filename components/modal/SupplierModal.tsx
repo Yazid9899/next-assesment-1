@@ -126,7 +126,7 @@ const SupplierModal: React.FC<ProductModalProps> = ({
             <InputText
               onChange={handleChange}
               value={supplierForm.email}
-              type="text"
+              type="email"
               name="email"
               label="Email"
               placeholder="example@example.com"
