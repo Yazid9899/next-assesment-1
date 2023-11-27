@@ -1,6 +1,7 @@
 import { Product } from "@/utils/type";
 import Image from "next/image";
 import React from "react";
+import Button from "@/components/Button";
 
 interface ProductProps {
   product: Product;
@@ -36,20 +37,20 @@ const ProductCard = ({ product, supplier, onEdit, refresh }: ProductProps) => {
           {product.nama}
         </h2>
         <div className="flex justify-center items-center gap-2">
-          <button
+          <Button
             onClick={() => {
               deleteProduct();
             }}
-            className=" font-semibold hover:bg-gray-900 hover:text-white text-gray-900 rounded-md py-[2px] px-1 shadow-sm border-gray-900 border-2"
-          >
-            Delete
-          </button>
-          <button
+            label="delete"
+            bgColor="bg-gray-700"
+            textColor="white"
+          />
+          <Button
             onClick={onEdit}
-            className="font-semibold hover:bg-green-900 hover:text-white text-green-900 border-2 border-green-900 rounded-md py-[2px] px-3"
-          >
-            Edit
-          </button>
+            label="edit"
+            bgColor="bg-indigo-800"
+            textColor="white"
+          />
         </div>
       </div>
       <p className="leading-[17px] mb-2">{product.deskripsi}</p>

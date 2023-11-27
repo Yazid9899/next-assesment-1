@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Button from "@/components/Button";
 import ProductCard from "@/components/ProductCard";
 import ProductModal from "@/components/modal/ProductModal";
 import { Product, Supplier } from "@/utils/type";
@@ -38,13 +39,20 @@ const Products = () => {
 
   return (
     <>
-      <div className="ml-5 text-gray-950">
-        <div className="flex gap-5">
+      <div className="main-container">
+        <div className="rounded-t mb-0 px-5 py-3 border-dotted border-b flex flex-wrap items-center">
           <div>
-            <h1 className="text-4xl font-bold mb-1">PRODUCT LIST</h1>
+            <h1 className="header-text">PRODUCT LIST</h1>
             <p className="text-gray-400 ml-1">Welcome to the product list</p>
           </div>
-          <button onClick={() => setShowProductModal(true)}>Add Product</button>
+          <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+            <Button
+              onClick={() => setShowProductModal(true)}
+              label="ADD PRODUCT"
+              bgColor="bg-indigo-500"
+              textColor="white"
+            />
+          </div>
         </div>
 
         <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full gap-8 pt-14">
