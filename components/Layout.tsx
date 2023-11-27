@@ -8,9 +8,9 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen top-0 overflow-x-hidden">
+    <div className="min-h-screen top-0">
       <SideBar />
-      <main className="w-[calc(100%-256px)] ml-64">{children}</main>
+      <main className="md:ml-64 overflow-x-hidden">{children}</main>
     </div>
   );
 };

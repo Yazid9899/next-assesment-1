@@ -18,6 +18,7 @@ export interface Product {
   stok: number
   foto: string
   suplier_id: number
+  nama_suplier?: string
 }
 
 export interface ProductResponse {

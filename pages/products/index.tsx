@@ -6,7 +6,6 @@ import { Product, Supplier } from "@/utils/type";
 
 const Products = () => {
   const [products, setProducts] = useState<Array<Product> | null>(null);
-  const [suppliers, setSuppliers] = useState<Array<Supplier> | null>(null);
   const [isLoading, setLoading] = useState(true);
   const [showProductModal, setShowProductModal] = useState(false);
   const [editData, setEditData] = useState<Product | null>(null);
@@ -22,19 +21,8 @@ const Products = () => {
     }
   };
 
-  const fetchSupplier = async () => {
-    try {
-      const response = await fetch("/api/suppliers");
-      const data = await response.json();
-      setSuppliers(data.data);
-    } catch (error) {
-      console.error("Error fetching suppliers:", error);
-    }
-  };
-
   useEffect(() => {
     fetchProduct();
-    fetchSupplier();
   }, []);
 
   return (
@@ -50,20 +38,15 @@ const Products = () => {
               onClick={() => setShowProductModal(true)}
               label="ADD PRODUCT"
               bgColor="bg-indigo-500"
-              textColor="white"
             />
           </div>
         </div>
 
         <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full gap-8 pt-14">
           {products?.map((product) => {
-            const productSupplier = suppliers?.find(
-              (supplier) => supplier.id_suplier === product.id
-            );
             return (
               <ProductCard
                 product={product}
-                supplier={productSupplier?.nama_suplier}
                 key={product.id}
                 onEdit={() => {
                   setEditData(product);

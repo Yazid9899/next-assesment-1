@@ -19,7 +19,7 @@ const Suppliers = () => {
   };
   const deleteSupplier = async (id: number) => {
     try {
-      const response = await fetch(`api/suppliers/${id}`, {
+      await fetch(`api/suppliers/${id}`, {
         method: "DELETE",
       });
       fetchSupplier();
@@ -33,21 +33,20 @@ const Suppliers = () => {
 
   return (
     <>
-      <div className="main-container">
+      <div className="main-container mr-3">
         <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
           <div className="rounded-t mb-0 px-4 py-3 border-0">
             <div className="flex flex-wrap items-center">
               <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                 <h3 className="header-text">SUPPLIER LIST</h3>
               </div>
-              <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+              <div className="relative w-full max-w-full flex-grow flex-1 text-right">
                 <Button
                   onClick={() => {
                     setShowSupplierModal(true);
                   }}
                   label="ADD SUPPLIER"
                   bgColor="bg-indigo-500"
-                  textColor="white"
                 />
               </div>
             </div>
@@ -81,7 +80,6 @@ const Suppliers = () => {
                           }}
                           label="edit"
                           bgColor="bg-indigo-800"
-                          textColor="white"
                         />
                         <Button
                           onClick={() => {
@@ -89,7 +87,6 @@ const Suppliers = () => {
                           }}
                           label="delete"
                           bgColor="bg-gray-600"
-                          textColor="white"
                         />
                       </div>
                     </td>

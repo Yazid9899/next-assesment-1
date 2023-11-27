@@ -1,5 +1,7 @@
 import { Product, Supplier } from "@/utils/type";
 import React, { ChangeEvent, useEffect, useState } from "react";
+import Button from "@/components/Button";
+import InputText from "@/components/InputText";
 
 interface ProductModalProps {
   isVisible: boolean;
@@ -67,6 +69,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("MASUUUK");
     try {
       if (!selectedphoto) return;
       const uploadData = new FormData();
@@ -129,15 +132,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
       <div className="md:w-[600px] w-[90%] flex flex-col">
-        <button
-          onClick={() => {
-            close();
-            clearForm();
-          }}
-          className="text-xl text-white place-self-end mr-2 font-semibold hover:text-indigo-600"
-        >
-          x
-        </button>
+        <div className=" maxx-w-xs place-self-end">
+          <Button
+            onClick={() => {
+              close();
+            }}
+            label="X"
+            bgColor="bg-red-500"
+          />
+        </div>
         <form
           onSubmit={submitForm}
           className="w-full bg-white p-5 px-9 mx-auto rounded-lg"
@@ -145,24 +148,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
           <h1 className="text-5xl mb-4 font-extrabold text-gray-700 leading-[120%]">
             Product Form
           </h1>
-
-          <div className="mb-3">
-            <label
-              htmlFor="nama"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Product Name
-            </label>
-            <input
-              onChange={handleChange}
-              value={productForm.nama}
-              type="text"
-              name="nama"
-              id="nama"
-              placeholder="Nama Produk"
-              className=" mt-1 block w-full rounded-md p-1.5 input-form"
-            />
-          </div>
+          <InputText
+            onChange={handleChange}
+            value={productForm.nama}
+            type="text"
+            name="nama"
+            label="Product Name"
+            placeholder="Nama Produk"
+          />
 
           <div className="mb-3">
             <label
@@ -186,51 +179,30 @@ const ProductModal: React.FC<ProductModalProps> = ({
             </p>
           </div>
 
-          <div className="mb-3 flex justify-between">
-            <div>
-              <label
-                htmlFor="harga"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Price
-              </label>
-              <div className="relative mt-2 rounded-md shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <span className="text-gray-500 sm:text-sm">Rp</span>
-                </div>
-                <input
-                  onChange={handleChange}
-                  value={productForm.harga}
-                  type="text"
-                  name="harga"
-                  id="harga"
-                  className="block w-full rounded-md py-1.5 pl-9 input-form"
-                  placeholder="0.00"
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="stok"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                stock
-              </label>
-              <div className="relative mt-2 rounded-md shadow-sm">
-                <input
-                  onChange={handleChange}
-                  value={productForm.stok}
-                  type="text"
-                  name="stok"
-                  id="stok"
-                  className="block w-full rounded-md border-0 py-1.5 px-2 input-form"
-                  placeholder="0"
-                />
-              </div>
-            </div>
+          <div className="mb-3 flex justify-between gap-1">
+            <InputText
+              onChange={handleChange}
+              value={productForm.harga}
+              type="text"
+              name="harga"
+              label="Price"
+              placeholder="IDR"
+            />
+
+            <InputText
+              onChange={handleChange}
+              value={productForm.stok}
+              type="text"
+              name="stok"
+              label="Stock"
+              placeholder="0"
+            />
 
             <div className="flex flex-col">
-              <label htmlFor="suplier_id" className="pl-2">
+              <label
+                htmlFor="suplier_id"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 supplier
               </label>
               <select
@@ -238,8 +210,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 value={productForm.suplier_id}
                 id="suplier_id"
                 name="suplier_id"
-                className="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-4 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                className="py-2 px-3 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               >
+                <option value="">Select here</option>
                 {data?.map((supplier) => (
                   <option value={supplier.id_suplier}>
                     {supplier.nama_suplier}
@@ -284,7 +257,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                       className="hidden"
                     />
                   </label>
-                  <p className="pl-1">/ drag and drop</p>
+                  <p className="pl-1">Select a File</p>
                 </div>
                 <p className="text-xs leading-5 text-gray-600">
                   {productForm?.foto ? productForm.foto : "JPG up to 2MB"}
@@ -293,12 +266,12 @@ const ProductModal: React.FC<ProductModalProps> = ({
             </div>
           </div>
           <div className="flex items-center justify-end">
-            <button
-              type="submit"
-              className="place-content-end rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-600"
-            >
-              Save
-            </button>
+            <Button
+              submit={true}
+              onClick={() => {}}
+              label={editData ? "Save Changes" : "Add Product"}
+              bgColor="bg-indigo-500"
+            />
           </div>
         </form>
       </div>

@@ -15,7 +15,11 @@ export default async function handler(
     })
 
     if (req.method === "GET"){
-      const result = await db.all('SELECT * FROM produk')
+      const result = await db.all(`
+      SELECT produk.*, suplier.nama_suplier
+      FROM produk
+      JOIN suplier ON produk.suplier_id = suplier.id_suplier; 
+      `)
       await db.close()
   
       res.status(200).json({

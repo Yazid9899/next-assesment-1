@@ -33,9 +33,9 @@ input {
     @apply font-bold text-5xl text-gray-800;
   }
   .th-text {
-    @apply px-6 text-gray-900 align-middle border border-solid border-gray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left;
+    @apply px-3 text-gray-900 align-middle border border-solid border-gray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left;
   }
   .td-text {
-    @apply border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4;
+    @apply border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4;
   }
 }
