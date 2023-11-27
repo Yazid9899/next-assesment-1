@@ -1,7 +1,7 @@
-import { Product, Supplier } from "@/utils/type";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Button from "@/components/Button";
 import InputText from "@/components/InputText";
+import { Product, Supplier } from "@/utils/type";
 
 interface ProductModalProps {
   isVisible: boolean;
@@ -14,9 +14,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
   close,
   editData,
 }) => {
-  const [data, setData] = useState<Array<Supplier> | null>(null);
-  const [isLoading, setLoading] = useState(true);
-  const [selectedphoto, setSelectedPhoto] = useState<File>();
+  const [suppliers, setSuppliers] = useState<Array<Supplier> | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
+
   const [productForm, setProductForm] = useState({
     nama: "",
     deskripsi: "",
@@ -27,13 +27,18 @@ const ProductModal: React.FC<ProductModalProps> = ({
   });
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | any
+    >
   ) => {
     const { value, name, type } = e.target;
-    let updateValue = value;
+
     setProductForm((prevProductForm) => {
+      let updatedValue = value;
+
       if (type === "file" && e.target instanceof HTMLInputElement) {
         const file = e.target.files && e.target.files[0];
+
         if (file) {
           const fileSizeInMB = file.size / (1024 * 1024);
           const maxFileSize = 2;
@@ -42,39 +47,41 @@ const ProductModal: React.FC<ProductModalProps> = ({
             alert("File size exceeds the maximum limit of 2MB.");
             return prevProductForm;
           }
+
           setSelectedPhoto(file);
-          updateValue = file.name;
+          updatedValue = file.name;
         }
       }
+
       if (name === "harga" || name === "stok") {
-        updateValue = value.replace(/[^0-9.]/g, "");
+        updatedValue = value.replace(/[^0-9.]/g, "");
       }
+
       return {
         ...prevProductForm,
-        [name]: updateValue,
+        [name]: updatedValue,
       };
     });
   };
 
-  const fetchSupplier = async () => {
+  const fetchSuppliers = async () => {
     try {
       const response = await fetch("api/suppliers");
       const data = await response.json();
-      setData(data.data);
-      setLoading(false);
+      setSuppliers(data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("MASUUUK");
+
     try {
-      if (!selectedphoto) return;
+      if (!selectedPhoto) return;
+
       const uploadData = new FormData();
-      uploadData.append("photo", selectedphoto);
-      let jsonResponse;
+      uploadData.append("photo", selectedPhoto);
 
       if (editData) {
         await fetch(`api/products/${editData.id}`, {
@@ -89,12 +96,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
           body: JSON.stringify(productForm),
         });
 
-        jsonResponse = await response.json();
+        const jsonResponse = await response.json();
         await fetch(`api/uploads/${jsonResponse.data.id}`, {
           method: "POST",
           body: uploadData,
         });
       }
+
       close();
       clearForm();
     } catch (error) {
@@ -114,17 +122,20 @@ const ProductModal: React.FC<ProductModalProps> = ({
   };
 
   useEffect(() => {
-    editData
-      ? setProductForm({
-          nama: editData.nama,
-          deskripsi: editData.deskripsi,
-          harga: editData.harga.toString(),
-          stok: editData.stok.toString(),
-          foto: editData.foto,
-          suplier_id: editData.suplier_id.toString(),
-        })
-      : clearForm();
-    fetchSupplier();
+    if (editData) {
+      setProductForm({
+        nama: editData.nama,
+        deskripsi: editData.deskripsi,
+        harga: editData.harga.toString(),
+        stok: editData.stok.toString(),
+        foto: editData.foto,
+        suplier_id: editData.suplier_id.toString(),
+      });
+    } else {
+      clearForm();
+    }
+
+    fetchSuppliers();
   }, [editData]);
 
   if (!isVisible) return null;
@@ -171,7 +182,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 id="deskripsi"
                 name="deskripsi"
                 rows={2}
-                className="block w-full rounded-md py-1.5 input-form"
+                className="block w-full rounded-md p-1.5 input-form"
               ></textarea>
             </div>
             <p className="mt-1 text-sm leading-6 text-indigo-600">
@@ -210,10 +221,10 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 value={productForm.suplier_id}
                 id="suplier_id"
                 name="suplier_id"
-                className="py-2 px-3 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="py-2 px-3 block w-full rounded-md border-0 input-form"
               >
                 <option value="">Select here</option>
-                {data?.map((supplier) => (
+                {suppliers?.map((supplier) => (
                   <option value={supplier.id_suplier}>
                     {supplier.nama_suplier}
                   </option>

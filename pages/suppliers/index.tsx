@@ -1,4 +1,3 @@
-import SideBar from "@/components/SideBar";
 import SupplierModal from "@/components/modal/SupplierModal";
 import Button from "@/components/Button";
 import { Supplier } from "@/utils/type";
