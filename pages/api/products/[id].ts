@@ -1,7 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import sqlite3 from 'sqlite3'
-import { open } from 'sqlite'
-import errorHandling from '@/utils/errorHandling'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import sqlite3 from 'sqlite3';
+import { open } from 'sqlite';
+import errorHandling from '@/utils/errorHandling';
 import { ErrorResponse, ProductResponse } from '@/utils/type';
 
 export default async function handler(
@@ -10,37 +10,43 @@ export default async function handler(
 ) {
   try {
     const { id } = req.query;
+
     const db = await open({
       filename: 'test.db',
       driver: sqlite3.Database,
     });
 
     const product = await db.get('SELECT * FROM produk WHERE id = ?', id);
-    if (!product) throw {name: "Product Not Found"};
 
-    if (req.method === "GET") {
+    if (!product) {
+      throw { name: 'Product Not Found' };
+    }
+
+    if (req.method === 'GET') {
       await db.close();
       res.status(200).json({
-        data: product, 
-        message: "Product Found"
+        data: product,
+        message: 'Product Found',
       });
-    };
+    }
 
-    if (req.method === "DELETE") {
+    if (req.method === 'DELETE') {
       await db.run('DELETE FROM produk WHERE id = ?', id);
 
       await db.close();
 
-      res.status(200).json({ 
+      res.status(200).json({
         data: product,
-        message: `Product ${product.nama} deleted successfully` 
+        message: `Product ${product.nama} deleted successfully`,
       });
-    };
+    }
 
-    if (req.method === "PATCH") {
+    if (req.method === 'PATCH') {
       const { nama, deskripsi, harga, stok, foto, suplier_id } = req.body;
 
-      if (!nama || !deskripsi || !harga || !stok || !foto || !suplier_id) throw {name: "input error"};
+      if (!nama || !deskripsi || !harga || !stok || !foto || !suplier_id) {
+        throw { name: 'Input Error' };
+      }
 
       await db.run(
         'UPDATE produk SET nama = ?, deskripsi = ?, harga = ?, stok = ?, foto = ?, suplier_id = ? WHERE id = ?',
@@ -49,13 +55,12 @@ export default async function handler(
 
       const updatedProduct = await db.get('SELECT * FROM produk WHERE id = ?', id);
       await db.close();
-  
-      res.status(200).json({ 
-          data: updatedProduct, 
-          message: `Product with id ${id} updated successfully` 
-      });
-    };
 
+      res.status(200).json({
+        data: updatedProduct,
+        message: `Product with id ${id} updated successfully`,
+      });
+    }
   } catch (error) {
     errorHandling(error, res);
   }

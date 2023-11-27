@@ -6,7 +6,6 @@ import { Product, Supplier } from "@/utils/type";
 
 const Products = () => {
   const [products, setProducts] = useState<Array<Product> | null>(null);
-  const [isLoading, setLoading] = useState(true);
   const [showProductModal, setShowProductModal] = useState(false);
   const [editData, setEditData] = useState<Product | null>(null);
 
@@ -15,9 +14,8 @@ const Products = () => {
       const response = await fetch("/api/products");
       const data = await response.json();
       setProducts(data.data);
-      setLoading(false);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error(error);
     }
   };
 

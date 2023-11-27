@@ -1,8 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import sqlite3 from 'sqlite3'
-import { open } from 'sqlite'
-import errorHandling from '@/utils/errorHandling'
-import { SupplierResponse,ErrorResponse } from '@/utils/type'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import sqlite3 from 'sqlite3';
+import { open } from 'sqlite';
+import errorHandling from '@/utils/errorHandling';
+import { SupplierResponse, ErrorResponse } from '@/utils/type';
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,41 +11,39 @@ export default async function handler(
   try {
     const db = await open({
       filename: 'test.db',
-      driver: sqlite3.Database
-    })
+      driver: sqlite3.Database,
+    });
 
-    if (req.method === "GET"){
-      const result = await db.all('SELECT * FROM suplier')
-      await db.close()
-      
+    if (req.method === 'GET') {
+      const result = await db.all('SELECT * FROM suplier');
+      await db.close();
+
       res.status(200).json({
-        data: result, 
-        message: "fetching supliers success" 
+        data: result,
+        message: 'Fetching suppliers success',
       });
-    };
+    }
 
-    if (req.method === "POST"){
+    if (req.method === 'POST') {
       const { nama_suplier, alamat, email } = req.body;
 
-      if (!nama_suplier || !alamat || !email) throw {name: "input error"};
+      if (!nama_suplier || !alamat || !email) throw { name: 'input error' };
 
-      const insertQuery =await db.run(
+      const insertQuery = await db.run(
         'INSERT INTO suplier (nama_suplier, alamat, email) VALUES (?, ?, ?)',
         nama_suplier,
         alamat,
         email
       );
-      const newSupplier = await db.get('SELECT * FROM suplier WHERE id_suplier = ?', insertQuery.lastID)
-      await db.close()
+      const newSupplier = await db.get('SELECT * FROM suplier WHERE id_suplier = ?', insertQuery.lastID);
+      await db.close();
 
       res.status(200).json({
         data: newSupplier,
-        message: 'Supplier ditambah'
-      })
+        message: 'Supplier ditambah',
+      });
     }
-
   } catch (error) {
-    console.log(error);
     errorHandling(error, res);
   }
 }

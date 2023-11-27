@@ -78,16 +78,34 @@ const ProductModal: React.FC<ProductModalProps> = ({
     e.preventDefault();
 
     try {
-      if (!selectedPhoto) return;
-
-      const uploadData = new FormData();
-      uploadData.append("photo", selectedPhoto);
+      if (
+        !productForm.nama ||
+        !productForm.deskripsi ||
+        !productForm.foto ||
+        !productForm.harga ||
+        !productForm.stok ||
+        !productForm.suplier_id
+      ) {
+        alert("Please fill in all the required fields.");
+        return;
+      }
 
       if (editData) {
         await fetch(`api/products/${editData.id}`, {
           method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(productForm),
         });
       } else {
+        if (!selectedPhoto) {
+          alert("Please select a photo.");
+          return;
+        }
+        const uploadData = new FormData();
+        uploadData.append("photo", selectedPhoto);
+
         const response = await fetch("api/products", {
           method: "POST",
           headers: {
@@ -256,7 +274,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 <div className="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
                   <label
                     htmlFor="foto"
-                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                    className="relative cursor-pointer bg-white font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     <span>Upload a file</span>
                     <input

@@ -26,7 +26,7 @@ const SideBar = () => {
 
         <h1 className="text-5xl font-bold text-slate-50">Brand</h1>
       </div>
-      <ul className="flex justify-center gap-5 md:flex-col">
+      <ul className="flex justify-center md:gap-0 gap-5 md:flex-col">
         <li
           className={`mb-4 ${
             router.pathname === "/products" ? "active group" : ""

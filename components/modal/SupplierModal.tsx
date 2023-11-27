@@ -41,31 +41,35 @@ const SupplierModal: React.FC<ProductModalProps> = ({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const { alamat, email, nama_suplier } = supplierForm;
+
+    if (!alamat || !email || !nama_suplier) {
+      alert("Please fill in all the required fields.");
+      return;
+    }
+
     try {
-      if (!editData) {
-        const response = await fetch("api/suppliers", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(supplierForm),
-        });
-      } else {
-        const response = await fetch(`api/suppliers/${editData.id_suplier}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(supplierForm),
-        });
+      const method = editData ? "PATCH" : "POST";
+      const apiUrl = editData
+        ? `api/suppliers/${editData.id_suplier}`
+        : "api/suppliers";
+
+      const response = await fetch(apiUrl, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(supplierForm),
+      });
+
+      if (response.ok) {
+        close();
+        clearForm();
       }
-      close();
-      clearForm();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
-
   useEffect(() => {
     if (editData) {
       setSupplierForm({
@@ -73,7 +77,6 @@ const SupplierModal: React.FC<ProductModalProps> = ({
         alamat: editData.alamat,
         email: editData.email,
       });
-      console.log(supplierForm);
     } else {
       clearForm();
     }
