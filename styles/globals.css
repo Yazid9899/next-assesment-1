@@ -1,8 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Inter;
+}
+
+button,
+textarea,
+input {
+  outline: none;
+}
+
 @layer utilities {
   .side-bar-link {
     @apply flex items-center py-2 px-4 text-slate-200 text-2xl gap-4 hover:bg-gray-950 hover:text-gray-300 rounded-lg group-[.active]:bg-gray-800 group-[.active]:text-white;
+  }
+  .input-form {
+    @apply text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6;
   }
 }

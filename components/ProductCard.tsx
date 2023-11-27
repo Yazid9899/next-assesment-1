@@ -4,16 +4,29 @@ import React from "react";
 
 interface ProductProps {
   product: Product;
+  supplier: any;
+  onEdit: () => void;
+  refresh: () => void;
 }
 
-const ProductCard = ({ product }: ProductProps) => {
+const ProductCard = ({ product, supplier, onEdit, refresh }: ProductProps) => {
+  const deleteProduct = async () => {
+    try {
+      const response = await fetch(`api/products/${product.id}`, {
+        method: "DELETE",
+      });
+      refresh();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex flex-col p-6 justify-center items-start text-black-100 bg-primary-blue-100 bg-white hover:shadow-md rounded-3xl">
       <div className="relative w-full h-40 my-3 object-contain">
         <Image
-          src="/uploads/samurai.png"
+          src={"/uploads/products/" + product.foto}
           alt={product.nama}
-          layout="fill"
+          fill
           priority
           className="object-contain"
         />
@@ -23,10 +36,18 @@ const ProductCard = ({ product }: ProductProps) => {
           {product.nama}
         </h2>
         <div className="flex justify-center items-center gap-2">
-          <button className=" font-semibold hover:bg-gray-900 hover:text-white text-gray-900 rounded-md py-[2px] px-1 shadow-sm border-gray-900 border-2">
+          <button
+            onClick={() => {
+              deleteProduct();
+            }}
+            className=" font-semibold hover:bg-gray-900 hover:text-white text-gray-900 rounded-md py-[2px] px-1 shadow-sm border-gray-900 border-2"
+          >
             Delete
           </button>
-          <button className="font-semibold hover:bg-green-900 hover:text-white text-green-900 border-2 border-green-900 rounded-md py-[2px] px-3">
+          <button
+            onClick={onEdit}
+            className="font-semibold hover:bg-green-900 hover:text-white text-green-900 border-2 border-green-900 rounded-md py-[2px] px-3"
+          >
             Edit
           </button>
         </div>
@@ -44,6 +65,23 @@ const ProductCard = ({ product }: ProductProps) => {
           {product.stok}
           <span className="text-[12px]"> pcs left</span>
         </p>
+      </div>
+      <div className="flex justify-end gap-3 w-full text-gray-700 text-[13px]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="w-[20px] h-[20px]"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819"
+          />
+        </svg>
+        <p className="text-[13px] font-[500]">{supplier}</p>
       </div>
     </div>
   );
