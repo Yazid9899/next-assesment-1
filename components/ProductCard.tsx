@@ -12,7 +12,7 @@ interface ProductProps {
 const ProductCard = ({ product, supplier, onEdit, refresh }: ProductProps) => {
   const deleteProduct = async () => {
     try {
-      const response = await fetch(`api/products/${product.id}`, {
+      await fetch(`api/products/${product.id}`, {
         method: "DELETE",
       });
       refresh();
@@ -24,7 +24,7 @@ const ProductCard = ({ product, supplier, onEdit, refresh }: ProductProps) => {
     <div className="flex flex-col p-6 justify-center items-start text-black-100 bg-primary-blue-100 bg-white hover:shadow-md rounded-3xl">
       <div className="relative w-full h-40 my-3 object-contain">
         <Image
-          src={"/uploads/products/" + product.foto}
+          src={"/uploads/products/" + product.id + ".jpg"}
           alt={product.nama}
           fill
           priority

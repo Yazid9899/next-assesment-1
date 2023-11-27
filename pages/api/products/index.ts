@@ -41,7 +41,7 @@ export default async function handler(
       
       const newProduct = await db.get('SELECT * FROM produk WHERE id = ?', insertQuery.lastID);
       await db.close();
-  
+        
       res.status(200).json({ 
         data: newProduct,
         message: 'Product Added'

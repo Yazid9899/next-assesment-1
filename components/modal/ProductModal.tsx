@@ -47,7 +47,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
       if (name === "harga" || name === "stok") {
         updateValue = value.replace(/[^0-9.]/g, "");
       }
-      console.log(productForm);
       return {
         ...prevProductForm,
         [name]: updateValue,
@@ -72,31 +71,27 @@ const ProductModal: React.FC<ProductModalProps> = ({
       if (!selectedphoto) return;
       const uploadData = new FormData();
       uploadData.append("photo", selectedphoto);
-
-      await fetch("api/products/upload", {
-        method: "POST",
-        body: uploadData,
-      });
+      let jsonResponse;
 
       if (editData) {
-        console.log("MASUK SINI");
-        const response = await fetch(`api/products/${editData.id}`, {
+        await fetch(`api/products/${editData.id}`, {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(productForm),
         });
       } else {
-        await fetch("api/products", {
+        const response = await fetch("api/products", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(productForm),
         });
-      }
 
+        jsonResponse = await response.json();
+        await fetch(`api/uploads/${jsonResponse.data.id}`, {
+          method: "POST",
+          body: uploadData,
+        });
+      }
       close();
       clearForm();
     } catch (error) {
@@ -122,7 +117,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
           deskripsi: editData.deskripsi,
           harga: editData.harga.toString(),
           stok: editData.stok.toString(),
-          foto: "",
+          foto: editData.foto,
           suplier_id: editData.suplier_id.toString(),
         })
       : clearForm();
@@ -130,6 +125,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
   }, [editData]);
 
   if (!isVisible) return null;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
       <div className="md:w-[600px] w-[90%] flex flex-col">

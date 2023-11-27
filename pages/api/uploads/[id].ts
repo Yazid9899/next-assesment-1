@@ -8,18 +8,15 @@ export const config = {
     bodyParser: false,
   }
 }
+type fileName = string
  
-const readFile = (req: NextApiRequest, saveLocally: boolean )
+const readFile = (req: NextApiRequest, saveLocally: boolean, fileName:any )
 :Promise<{ fields: formidable.Fields; files: formidable.Files}> => {
   const option: formidable.Options = {};
   if (saveLocally) {
-    
     option.uploadDir = path.join(process.cwd(), "public/uploads/products")
     option.filename = (name, ext, path, form) => {
-      console.log(path.originalFilename);
-      console.log("ASDASDASDASD");
-      console.log(name);
-      return name + ".jpg";
+    return fileName + ".jpg"
     }
   }
   
@@ -35,19 +32,30 @@ const readFile = (req: NextApiRequest, saveLocally: boolean )
 }
 
 const handler: NextApiHandler = async (req, res) => {
+  if (req.method === "POST"){
   try {
+    console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSs");
     await fs.readdir(path.join(process.cwd() + "/public", "/uploads", "/products"))
   } catch (error) {
     console.log(error);
     await fs.mkdir(path.join(process.cwd() + "/public", "/uploads", "/products"))
   }
-    const data = await readFile(req, true);
-    res.status(200).json({
-      data: data,
-      message: "uploads success" 
-    });
+  try {
+    const fileName= req.query.id;
+      await readFile(req, true, fileName);
     
-
+      res.status(200).json({
+        message: "uploads success" 
+      });
+    
+  } catch (error) {
+    console.log(error);
+    console.error(error);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+}
 }
 
 export default handler;
